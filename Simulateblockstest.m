@@ -1,5 +1,5 @@
 function Simulateblockstest(app)
-step = 20;
+step = -20;
 if app.Image2.Position(2) < 10
     app.Image2.Position = [75 372 100 100];
 end
