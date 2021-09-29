@@ -7,10 +7,16 @@ FallingBlocksFigure = figure('color',[.2 .8 .8],...            %Block
 FallingBlocksAxes = axes('color', 'black',...                  %Axes
    'XLim', [0 100], 'YLim', [0 100], 'XTickLabels',[],'YTickLabels',[],'position',[.05 .05 .9 .9]);
 
-FallingBlockVel = [0, -2];                                     %Ball
-FallingBlockPos = [20, 70];
+FallingBlockVel = [0, -1];                                     %Block
+GoodBlockVel = [0, -2];                                        %Good Block
+FallingBlockPos = [30, 70];
+GoodBlockPos = [20, 90];
 FallingBlock = line(FallingBlockPos(1),FallingBlockPos(2),...  
-    'marker','.','markersize', 25,'color','red');
+    'marker','.','markersize', 50,'color','red');
+GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
+    'marker','.','markersize', 25,'color','green');
+
+
 
 global PlayerCenter;                                           %Player
 PlayerCenter = 45;
@@ -20,19 +26,34 @@ Player = line([PlayerCenter - 5, PlayerCenter + 5],[5 5],...
 %------------------------Loop-----------------------------------------%
 tic;
 toc;
-while toc < 15
+while toc < 50
     
     if FallingBlockPos(2) < 5
         if abs(FallingBlockPos(1) - PlayerCenter) > 5
-            newpos = randi([10 90]);
-            FallingBlockPos = [newpos 100];
+            newposx = randi([10 90]);
+            newposy = randi([80 100]);
+            FallingBlockPos = [newposx newposy];
+            pause(randi(3));
         else 
            close all; return ;
+        end
+    end
+    
+    if GoodBlockPos(2) < 5
+        if abs(GoodBlockPos(1) - PlayerCenter) > 5
+            newposx = randi([10 90]);
+            newposy = randi([80 100]);
+            GoodBlockPos = [newposx newposy];
+        else 
+           close all; return;
         end
     end
                 
     FallingBlockPos = FallingBlockPos + FallingBlockVel;      %Update Ball  
     set(FallingBlock, 'XData', FallingBlockPos(1), 'YData', FallingBlockPos(2))
+    
+    GoodBlockPos = GoodBlockPos + GoodBlockVel;      %Update Ball  
+    set(GoodBlock, 'XData', GoodBlockPos(1), 'YData', GoodBlockPos(2))
     
     set(Player, 'XData', [PlayerCenter - 5, PlayerCenter + 5])
     
@@ -43,7 +64,7 @@ function keyboardFunction(figure,event)
 global PlayerCenter
 switch event.Key
     case 'rightarrow'
-        PlayerCenter = PlayerCenter + 2; 
+        PlayerCenter = PlayerCenter + 2;
     case 'leftarrow'
         PlayerCenter = PlayerCenter - 2;
     case 'a'
@@ -51,7 +72,7 @@ switch event.Key
     case 'd'
         PlayerCenter = PlayerCenter + 2;
 end 
-%set(gcf,'color',rand(1,3))
+set(gcf,'color',rand(1,3))
 end
 
 
