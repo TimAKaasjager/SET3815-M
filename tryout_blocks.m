@@ -58,12 +58,12 @@ while toc < 50
     Display_lives = 'Lives';   
     amount_lives = livescounter;
     X = [Display_lives,' = ',num2str(amount_lives)];
-    text(80,80,X,'FontSize',40,'Color','w');
+    text(80,80,X,'FontSize',40,'Color','w','FontName','Impact');
     
     Display_points = 'Points';
     amount_points = pointscounter;
     Y = [Display_points, ' = ', num2str(amount_points)];
-    text(80,70,Y,'Fontsize',40,'Color','w'); 
+    text(80,70,Y,'Fontsize',40,'Color','w','FontName','Impact'); 
    
     %------------------------------------------------
                 
