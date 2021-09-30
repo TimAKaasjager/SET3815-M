@@ -4,7 +4,7 @@
 FallingBlocksFigure = figure('color',[0 0.4470 0.7410],...            %Block
     'KeyPressFcn', @keyboardFunction,'unit','normal','position',[.1 .1 .8 .8]);
 
-FallingBlocksAxes = axes('color', '[0.3010 0.7450 0.9330]',...                  %Axes
+FallingBlocksAxes = axes('color', 'black',...                  %Axes
    'XLim', [0 100], 'YLim', [0 100], 'XTickLabels',[],'YTickLabels',[],'position',[.05 .05 .9 .9]);
 
 giftspeed = randi([-3 -1]);
@@ -17,15 +17,15 @@ FallingBlock = line(FallingBlockPos(1),FallingBlockPos(2),...
 GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
     'marker','.','markersize', 25,'color','green');
 
-% scorecounter = [];
-% livescounter = [];
-
 global PlayerCenter;                                           %Player
 PlayerCenter = 45;
 Player = line([PlayerCenter - 5, PlayerCenter + 5],[5 5],...     
     'color', '[0.5 0.5 0.5]', 'linewidth', 4);
 
 %------------------------Loop-----------------------------------------%
+
+livescounter = 3; 
+pointscounter = [];
 
 tic;
 toc;
@@ -38,7 +38,8 @@ while toc < 50
             FallingBlockPos = [newposx newposy];
             pause(randi(3));
         else 
-           close all; return;
+           %close all; return;
+           livescounter = livescounter - 1;
         end
     end
     
@@ -47,11 +48,24 @@ while toc < 50
             newposx = randi([10 90]);
             newposy = randi([80 100]);
             GoodBlockPos = [newposx newposy];
-        else 
-           close all; return;
+        else
+            close all; return;
         end
     end
-
+    
+    
+    %----------The counters---------------------------- 
+    Display_lives = 'Lives';   
+    amount_lives = livescounter;
+    X = [Display_lives,' = ',num2str(amount_lives)];
+    text(80,80,X,'FontSize',40,'Color','w');
+    
+    Display_points = 'Points';
+    amount_points = pointscounter;
+    Y = [Display_points, ' = ', num2str(amount_points)];
+    text(80,70,Y,'Fontsize',40,'Color','w'); 
+   
+    %------------------------------------------------
                 
     FallingBlockPos = FallingBlockPos + FallingBlockVel;      %Update Ball  
     set(FallingBlock, 'XData', FallingBlockPos(1), 'YData', FallingBlockPos(2))
