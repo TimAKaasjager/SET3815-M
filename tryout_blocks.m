@@ -7,7 +7,7 @@ FallingBlocksFigure = figure('color',[0 0.4470 0.7410],...            %Block
 FallingBlocksAxes = axes('color', 'black',...                  %Axes
    'XLim', [0 100], 'YLim', [0 100], 'XTickLabels',[],'YTickLabels',[],'position',[.05 .05 .9 .9]);
 
-giftspeed = randi([-3 -1]);
+giftspeed = randi([-2 -1]);
 FallingBlockVel = [0, -1];                                     %Block
 GoodBlockVel = [0, giftspeed];                                        %Good Block
 FallingBlockPos = [30, 70];
@@ -25,7 +25,7 @@ Player = line([PlayerCenter - 5, PlayerCenter + 5],[5 5],...
 %------------------------Loop-----------------------------------------%
 
 livescounter = 3; 
-pointscounter = [];
+pointscounter = 0;
 
 tic;
 toc;
@@ -36,10 +36,14 @@ while toc < 50
             newposx = randi([10 90]);
             newposy = randi([80 100]);
             FallingBlockPos = [newposx newposy];
-            pause(randi(3));
+ %           pause(randi(3));
         else 
            %close all; return;
            livescounter = livescounter - 1;
+           newposx = randi([10 90]);
+           newposy = randi([80 100]);
+           FallingBlockPos = [newposx newposy];
+           
         end
     end
     
@@ -49,7 +53,11 @@ while toc < 50
             newposy = randi([80 100]);
             GoodBlockPos = [newposx newposy];
         else
-            close all; return;
+            pointscounter = pointscounter + 1;
+            newposx = randi([10 90]);
+            newposy = randi([80 100]);
+            GoodBlockPos = [newposx newposy];
+            
         end
     end
     
@@ -58,12 +66,12 @@ while toc < 50
     Display_lives = 'Lives';   
     amount_lives = livescounter;
     X = [Display_lives,' = ',num2str(amount_lives)];
-    text(80,80,X,'FontSize',40,'Color','w','FontName','Impact');
+    T_lives = text(80,80,X,'FontSize',40,'Color','w','FontName','Impact');
     
     Display_points = 'Points';
     amount_points = pointscounter;
     Y = [Display_points, ' = ', num2str(amount_points)];
-    text(80,70,Y,'Fontsize',40,'Color','w','FontName','Impact'); 
+    T_points = text(80,70,Y,'Fontsize',40,'Color','w','FontName','Impact'); 
    
     %------------------------------------------------
                 
