@@ -59,8 +59,10 @@ while toc < 50
             GoodBlockPos = [newposx newposy];
             
         end
+    if livescounter == 0
+        close all; return;
     end
-    
+   
     
     %----------The counters---------------------------- 
     Display_lives = 'Lives';   
