@@ -60,17 +60,18 @@ while toc < 150
         end
     end
     
-    R = randi([0 5]);
+%    R = randi([0 5]);
     if GoodBlockPos(2) < 5
         if abs(GoodBlockPos(1) - PlayerCenter) > 5
             newposx = randi([10 90]);
             newposy = randi([80 100]);
             GoodBlockPos = [newposx newposy];
         else
-            pointscounter = pointscounter + R;
-            newposx = randi([10 90]);
+            pointscounter = pointscounter - giftspeed;          %points correspond to speed of gift
+            newposx = randi([10 90]s);
             newposy = randi([80 100]);
             GoodBlockPos = [newposx newposy];
+            set(GoodBlock, 'markersize', -giftspeed*30, 'YData')
             
         end
     end
