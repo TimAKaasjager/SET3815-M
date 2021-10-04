@@ -8,18 +8,18 @@ FallingBlocksAxes = axes('color', 'black',...                  %Axes
 %giftspeed = randi([-2 -1]);
 FallingBlockVel = [0, -1];                                     %Block
 GoodBlockVel = [0, -1];                                         %Good Block
-FallingBlockVelpl = [0, -1];
+FallingBlockVelpl = [0 0; -1 -1];
 FallingBlockPos = [30 70];
 FallingBlockPossq = [50 80];
-FallingBlockPospl = [60 90];
+FallingBlockPospl = [50 60;70 80];
 GoodBlockPos = [20, 90];
 FallingBlock = line(FallingBlockPos(1),FallingBlockPos(2),...  
     'marker','.','markersize', 50,'color','red');
 FallingBlocksq = line(FallingBlockPossq(1),FallingBlockPossq(2),...  
     'marker','s','markersize', 70,'color','red');
-%plastic = imread('Plastic-PNG-Transparent-HD-Photo.png'); 
-%plastic = imresize(plastic, 0.2);
-%fallingplastic = subimage(FallingBlockPospl(1),FallingBlockPospl(2),plastic); 
+plastic = imread('Plastic-PNG-Transparent-HD-Photo.png'); 
+plastic = imresize(plastic, 0.001);
+fallingplastic = image('XData',FallingBlockPospl(1,:),'YData',FallingBlockPospl(2,:),'CData', flipud(plastic)); 
 GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
     'marker','.','markersize', 25,'color','green');
 
@@ -86,21 +86,21 @@ while toc < 150
         end
     end
     
-%     if FallingBlockPospl(2) < 5
-%         if abs(FallingBlockPospl(1) - PlayerCenter) > 5
-%             newposx = randi([10 90]);
-%             newposy = randi([80 100]);
-%             speed = randi([-2 -1]);
-%             FallingBlockPospl = [newposx newposy];
-%             FallingBlockVelpl = [0 speed];
-%         else 
-%             pointscounter = pointscounter - speed;          %points correspond to speed of gift
-%             newposx = randi([10 90]);
-%             newposy = randi([80 100]);
-%             FallingBlockPospl = [newposx newposy];
-%                   
-%         end
-%     end
+    if FallingBlockPospl(2) < 5
+        if abs(FallingBlockPospl(1) - PlayerCenter) > 5
+            newposx = randi([10 90]);
+            newposy = randi([80 100]);
+            speed = randi([-2 -1]);
+            FallingBlockPospl = [newposx newposy];
+            FallingBlockVelpl = [0 speed];
+        else 
+            pointscounter = pointscounter - speed;          %points correspond to speed of gift
+            newposx = randi([10 90]);
+            newposy = randi([80 100]);
+            FallingBlockPospl = [newposx newposy];
+                  
+        end
+    end
     
 %    R = randi([0 5]);
     if GoodBlockPos(2) < 5
@@ -133,6 +133,9 @@ end
     
     FallingBlockPossq = FallingBlockPossq + FallingBlockVel;      %Update Ball  
     set(FallingBlocksq, 'XData', FallingBlockPossq(1), 'YData', FallingBlockPossq(2))
+    
+    FallingBlockPospl = FallingBlockPospl + FallingBlockVelpl;      %Update plastic
+    set(fallingplastic, 'XData', FallingBlockPospl(1), 'YData', FallingBlockPospl(2))
     
     GoodBlockPos = GoodBlockPos + GoodBlockVel;      %Update Ball  
     set(GoodBlock, 'XData', GoodBlockPos(1), 'YData', GoodBlockPos(2))
