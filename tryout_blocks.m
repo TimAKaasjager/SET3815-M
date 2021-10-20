@@ -30,9 +30,10 @@ FallingBlock = line(FallingBlockPos(1),FallingBlockPos(2),...
     'marker','.','markersize', 50,'color','red');
 FallingBlocksq = line(FallingBlockPossq(1),FallingBlockPossq(2),...  
     'marker','s','markersize', 30,'color','red');
-wind = imread(); 
-wind = imresize(wind, 0.01);
-fallingwind = image('XData',FallingBlockPoswi(1,:),'YData',FallingBlockPoswi(2,:),'CData', flipud(wind)); 
+%---Format for including blocks
+% wind = imread(); 
+% wind = imresize(wind, 0.01);
+% fallingwind = image('XData',FallingBlockPoswi(1,:),'YData',FallingBlockPoswi(2,:),'CData', flipud(wind)); 
 GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
     'marker','.','markersize', 25,'color','green');
 
@@ -62,60 +63,11 @@ tic;
 toc;
 while toc < inf                 %game keeps running indefinitely
     
-    Badblock
-%     if FallingBlockPos(2) < 5                   %if y value of position is below a certain value
-%         if abs(FallingBlockPos(1) - PlayerCenter) > 5   %and the block is not touching the player
-%             %reposition block somewhere randomly at the top when it has
-%             %reached the bottom
-%             newposx = randi([10 90]);
-%             newposy = randi([80 100]);
-%             giftspeed = randi([-2 -1]);
-%             FallingBlockPos = [newposx newposy];
-%             FallingBlockVel = [0 giftspeed];
-%         else 
-%            %if it hits, lose one life and position block randomly at the
-%            %top
-%            
-%            livescounter = livescounter - 1;
-%            newposx = randi([10 90]);
-%            newposy = randi([80 100]);
-%            FallingBlockPos = [newposx newposy];        
-%         end
-%     end
-    
-    if FallingBlockPossq(2) < 5
-        if abs(FallingBlockPossq(1) - PlayerCenter) > 5
-            newposx = randi([10 90]);
-            newposy = randi([80 100]);
-            giftspeed = randi([-2 -1]);
-            FallingBlockPossq = [newposx newposy];
-            FallingBlockVel = [0 giftspeed];       
-        else 
-           
-           livescounter = livescounter - 1;
-           newposx = randi([10 90]);
-           newposy = randi([80 100]);
-           FallingBlockPossq = [newposx newposy];        
-        end
-    end
-    
-%     if FallingBlockPospl(2) < 5
-%         if abs(FallingBlockPospl(1,1)+(FallingBlockPospl(1,2)-FallingBlockPospl(1,1))/2 - PlayerCenter) > 5
-%             newposx = randi([10 90]);
-%             newposy = randi([80 100]);
-%             %randomize block speed when it goes back to the top
-%             speed = randi([-2 -1]);
-%             FallingBlockPospl = [newposx newposy];
-%             FallingBlockVelpl = [0 speed];
-%         else 
-%             pointscounter = pointscounter - speed;      %points correspond to speed of gift
-%             newposx = randi([10 90]);
-%             newposy = randi([80 100]);
-%             FallingBlockPospl = [newposx newposy];
-%                   
-%         end
-%     end
+   [FallingBlockPos, FallingBlockVel, livescounter] = Badblock(FallingBlockPos,FallingBlockVel,livescounter,PlayerCenter);
 
+   [FallingBlockPossq, FallingBlockVel, livescounter] = Badblock(FallingBlockPossq,FallingBlockVel,livescounter,PlayerCenter);
+
+   
     if GoodBlockPos(2) < 5
         if abs(GoodBlockPos(1) - PlayerCenter) > 5
             newposx = randi([10 90]);
