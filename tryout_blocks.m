@@ -62,26 +62,14 @@ T_points = text(80,70,Y,'Fontsize',40,'Color','w','FontName','Impact');
 tic;
 toc;
 while toc < inf                 %game keeps running indefinitely
-    
+    %Calls function that contains the if statement that dictates what
+    %happens when a block is at y = 0 or hits the player
    [FallingBlockPos, FallingBlockVel, livescounter] = Badblock(FallingBlockPos,FallingBlockVel,livescounter,PlayerCenter);
 
    [FallingBlockPossq, FallingBlockVel, livescounter] = Badblock(FallingBlockPossq,FallingBlockVel,livescounter,PlayerCenter);
-
-   
-    if GoodBlockPos(2) < 5
-        if abs(GoodBlockPos(1) - PlayerCenter) > 5
-            newposx = randi([10 90]);
-            newposy = randi([80 100]);
-            GoodBlockPos = [newposx newposy];
-        else
-            pointscounter = pointscounter - giftspeed;          %points correspond to speed of gift
-            newposx = randi([10 90]);
-            newposy = randi([80 100]);
-            GoodBlockPos = [newposx newposy];
-            set(GoodBlock, 'markersize', -giftspeed*30)
-            
-        end
-    end
+    %Calls a different function for the good block, as hitting the player
+    %has different consequences than hitting a bad block
+   [GoodBlockPos, GoodBlockVel, pointscounter] = Goodblockfunc(GoodBlockPos,GoodBlockVel,pointscounter,PlayerCenter);
 if livescounter == 0                            %what happens when the game is over
 %     bar(pointscounter)
 %     text(1:length(pointscounter),pointscounter,num2str(pointscounter'),'vert','bottom','horiz','center'); 
@@ -98,6 +86,7 @@ if livescounter == 0                            %what happens when the game is o
     break
     
 end
+
 
     FallingBlockPos = FallingBlockPos + FallingBlockVel;      %add velocity step to position
     set(FallingBlock, 'XData', FallingBlockPos(1), 'YData', FallingBlockPos(2)) %set new position
