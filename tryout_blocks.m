@@ -1,4 +1,12 @@
+%                                              Falling Blocks Game
+%                         Authors: Floris van Buren, Tim Kaasjager, Olav
+%                         Eringfeld en Sophie
+%                         Minimum Matlab version required: 2020a
+%                         Toolboxes required: Image Processing
+%                                           Have fun playing the game!
 
+%--------------------Setting up board and objects---------------%
+clear all
 FallingBlocksFigure = figure('color',[0 0.4470 0.7410],...            %Block
     'KeyPressFcn', @keyboardFunction,'unit','normal','position',[.1 .1 .8 .8]);
 
@@ -22,7 +30,7 @@ FallingBlock = line(FallingBlockPos(1),FallingBlockPos(2),...
     'marker','.','markersize', 50,'color','red');
 FallingBlocksq = line(FallingBlockPossq(1),FallingBlockPossq(2),...  
     'marker','s','markersize', 30,'color','red');
-% plastic = imread('Plastic-PNG-Transparent-HD-Photo.png'); 
+plastic = imread('Plastic-PNG-Transparent-HD-Photo.png'); 
 % plastic = imresize(plastic, 0.001);
 % fallingplastic = image('XData',FallingBlockPospl(1,:),'YData',FallingBlockPospl(2,:),'CData', flipud(plastic)); 
 GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
@@ -37,7 +45,7 @@ Player = line([PlayerCenter - 5, PlayerCenter + 5],[5 5],...
 %------------------------Loop-----------------------------------------%
 
 %counters display and initial conditions
-livescounter = 3; 
+livescounter = 3;
 pointscounter = 0;
 
 Display_lives = 'Lives';
