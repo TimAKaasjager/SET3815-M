@@ -10,8 +10,18 @@ clear all
 FallingBlocksFigure = figure('color',[0 0.4470 0.7410],...            %Block
     'KeyPressFcn', @keyboardFunction,'unit','normal','position',[.1 .1 .8 .8]);
 
-FallingBlocksAxes = axes('color', 'black',...                  %Axes
-   'XLim', [0 100], 'YLim', [0 100], 'XTickLabels',[],'YTickLabels',[],'position',[.05 .05 .9 .9]);
+% FallingBlocksAxes = axes('color', 'black',...                  %Axes
+%    'XLim', [0 100], 'YLim', [0 100], 'XTickLabels',[],'YTickLabels',[],'position',[.05 .05 .9 .9]);
+
+FallingBlocksAxes = gca';
+uistack(FallingBlocksAxes,'bottom');
+[x,FallingBlocksAxes]=imread('clouds.jpg');
+image(x)
+set(FallingBlocksAxes,'handlevisibility','off','visible','off')
+set(FallingBlocksAxes,'alphadata',.05)
+ax = gca;
+ax.YDir = 'normal';
+set(gca,'visible','off');
 
 %defining initial velocities and positions
 FallingBlockVel = [0, -1];                                      %Block
