@@ -1,15 +1,20 @@
-function [location, speed, pointscounter ] = Goodblockfunc(location,speed,pointscounter,PlayerCenter) 
-
-    if location(2) < 5
-        if abs(location(1) - PlayerCenter) > 5
-            newposx = randi([10 90]);
-            newposy = randi([80 100]);
+function [location, speed, pointscounter ] = Goodblockfunc(background, image, location,speed,pointscounter,PlayerCenter, PlayerWidth) 
+    dimensions = size(background);
+    imagedim = size(image);
+    if location(2) < 50
+        if abs(location(1) - PlayerCenter) > PlayerWidth
+            newposx = randi([0.1*dimensions(1) 0.9*dimensions(1)]);
+            newposy = randi([0.8*dimensions(2) dimensions(2)]);
             location = [newposx newposy];
+            giftspeed = -0.005*dimensions(2)*randi([4 6]);
+            speed = [0 giftspeed];
         else
             pointscounter = pointscounter - speed(2);          %points correspond to speed of gift
-            newposx = randi([10 90]);
-            newposy = randi([80 100]);
+            newposx = randi([0.1*dimensions(1) 0.9*dimensions(1)]);
+            newposy = randi([0.8*dimensions(2) dimensions(2)]);
             location = [newposx newposy];
+            giftspeed = -0.005*dimensions(2)*randi([4 6]);
+            speed = [0 giftspeed];
             
             
         end

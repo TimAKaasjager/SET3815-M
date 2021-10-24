@@ -15,13 +15,13 @@ FallingBlocksFigure = figure('color',[0 0.4470 0.7410],...            %Block
 
 FallingBlocksAxes = gca;
 uistack(FallingBlocksAxes,'bottom');
-[x, FallingBlocksAxes]=imread('clouds2.jpg');
+[x, FallingBlocksAxes]=imread('clouds.jpg');
 image(x)
 %set(x, 'ydir','reverse')
 set(FallingBlocksAxes,'handlevisibility','off','visible','off')
 set(FallingBlocksAxes,'alphadata',.05)
 ax = gca;
-ax.YDir = 'normal'
+ax.YDir = 'normal';
 set(gca,'visible','off')
 %set(gca, 'ydir','reverse')
 %set(FallingBlocksAxes,'ydir','reverse')
@@ -30,42 +30,33 @@ set(gca,'visible','off')
 
 
 
-%defining initial velocities and positions
-FallingBlockVel = [0, -12.8]; %[0, -1];                                      %Block
-FallingBlockvelsq = [0, -12.8]; %[0, -1];                                   %Block 2
-GoodBlockVel = [0, -12.8];   %[0, -1];                                     %Good Block
-FallingBlockVelpl = [0 0; -12.8 -12.8]; %[0 0; -1 -1];                               %plastic
+%-------defining initial velocities and positions
+FallingBlockVelcloud = [0, -12.8];                                %cloud
+FallingBlockVelsun = [0, -12.8];                                  %sun                                
 
-FallingBlockPos = [384 896]; %[30 70];
-FallingBlockPossq = [640 1024]; %[50 80];
-FallingBlockPoswi = [640 768;896 1024]; %[50 60;70 80];
-GoodBlockPos = [256, 1152]; %[20, 90];
+FallingBlockPossun = [200 1150];
+FallingBlockPoscloud = [640 1024]; 
 
 %defining shapes of player and falling blocks, including implementing image of plastic
 %bag
 
-FallingBlock = line(FallingBlockPos(1),FallingBlockPos(2),...  
-    'marker','.','markersize', 50,'color','red');
-FallingBlocksq = line(FallingBlockPossq(1),FallingBlockPossq(2),...  
-    'marker','s','markersize', 30,'color','red');
+[sun, mapsun, alpha] = imread('sunray.png','BackgroundColor', 'none');
+alpha = zeros(length(alpha(1)),length(alpha(2)));
+sunresize = imresize(sun, 0.3);
+Fallingsun = image('XData',FallingBlockPossun(1),'YData',FallingBlockPossun(2),'CData', flipud(sunresize)); 
 
-%  solar = imread('solar1.png'); 
-%  solar = imresize(solar, 1);
- 
- % fallingplastic = image('XData',FallingBlockPossq(1),'YData',FallingBlockPossq(2),'CData', flipud(solar));
+[cloud, mapcloud, alpha2] = imread('sadcloud.png','BackgroundColor', 'none');
+cloudresize = imresize(cloud, 0.3);
+alpha2 = zeros(length(alpha2(1)),length(alpha2(2)));
+Fallingcloud = image('XData',FallingBlockPoscloud(1),'YData',FallingBlockPoscloud(2),'CData', flipud(cloudresize));
 
-%---Format for including blocks
-%  FallingBlocksq = imread('solar1.png');
-%  imshow('solar1.png')
-%  FallingBlocksq = imresize(FallingBlocksq, 0.1);
-%  fallingwind = image('XData',FallingBlockPoswi(1,:),'YData',FallingBlockPoswi(2,:),'CData', flipud(wind)); 
-
- GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
-    'marker','.','markersize', 25,'color','green');
+%  GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
+%     'marker','.','markersize', 25,'color','green');
 
 global PlayerCenter;                                           %Player
 PlayerCenter = 576;
-Player = line([PlayerCenter - 64, PlayerCenter + 64],[64 64],...     
+PlayerWidth = 64;
+Player = line([PlayerCenter - PlayerWidth, PlayerCenter + PlayerWidth],[PlayerWidth PlayerWidth],...     
     'color', '[0.5 0.5 0.5]', 'linewidth', 4);
 
 %% 
@@ -87,19 +78,16 @@ T_points = text(1024,896,Y,'Fontsize',40,'Color','w','FontName','Impact');
 
 tic;
 toc;
-while toc < inf                 %game keeps running indefinitely
+while 1                 %game keeps running indefinitely
     %Calls function that contains the if statement that dictates what
     %happens when a block is at y = 0 or hits the player
-   [FallingBlockPos, FallingBlockVel, livescounter] = Badblock(FallingBlockPos,FallingBlockVel,livescounter,PlayerCenter);
+   [FallingBlockPoscloud, FallingBlockVelcloud, livescounter] = Badblock(x, cloud, ...
+   FallingBlockPoscloud,FallingBlockVelcloud,livescounter,PlayerCenter,PlayerWidth);
 
-   [FallingBlockPossq, FallingBlockVel, livescounter] = Badblock(FallingBlockPossq,FallingBlockVel,livescounter,PlayerCenter);
+   [FallingBlockPossun, FallingBlockVelsun, pointscounter] = Goodblockfunc(x, sun, ...
+   FallingBlockPossun,FallingBlockVelsun,pointscounter,PlayerCenter,PlayerWidth);
     %Calls a different function for the good block, as hitting the player
     %has different consequences than hitting a bad block
-   
-   [GoodBlockPos, GoodBlockVel, pointscounter] = Goodblockfunc(GoodBlockPos,GoodBlockVel,pointscounter,PlayerCenter);
-%       solar = imread('solar1.png'); 
-%       solar = imresize(solar, 1);
-%       solarpic = image('XData',FallingBlockPossq(1),'YData',FallingBlockPossq(2),'CData', flipud(solar));
 
    if livescounter == 0                            %what happens when the game is over
 %     bar(pointscounter)
@@ -118,20 +106,17 @@ while toc < inf                 %game keeps running indefinitely
     
    end
 
-    FallingBlockPos = FallingBlockPos + FallingBlockVel;      %add velocity step to position
-    set(FallingBlock, 'XData', FallingBlockPos(1), 'YData', FallingBlockPos(2)) %set new position
+    FallingBlockPoscloud = FallingBlockPoscloud + FallingBlockVelcloud;      %add velocity step to position
+    set(Fallingcloud, 'XData', FallingBlockPoscloud(1), 'YData', FallingBlockPoscloud(2)) %set new position
     
-    FallingBlockPossq = FallingBlockPossq + FallingBlockVel;
-    set(FallingBlocksq, 'XData', FallingBlockPossq(1), 'YData', FallingBlockPossq(2))
-      
-    GoodBlockPos = GoodBlockPos + GoodBlockVel;
-    set(GoodBlock, 'XData', GoodBlockPos(1), 'YData', GoodBlockPos(2))
+    FallingBlockPossun = FallingBlockPossun + FallingBlockVelsun;
+    set(Fallingsun, 'XData', FallingBlockPossun(1), 'YData', FallingBlockPossun(2))
     
     set(T_lives, 'str', [Display_lives,' = ',num2str(livescounter)])  %refresh counters
     
     set(T_points, 'str', [Display_points,' = ',num2str(pointscounter)])
     
-    set(Player, 'XData', [PlayerCenter - 64, PlayerCenter + 64])
+    set(Player, 'XData', [PlayerCenter - PlayerWidth, PlayerCenter + PlayerWidth])
     
     pause(0.05);
 end
