@@ -1,15 +1,14 @@
 %                                              Falling Blocks Game
 %                         Authors: Floris van Buren, Tim Kaasjager, Olav
-%                         Eringfeld en Sophie
+%                         Eringfeld en Sophie van Kleef 
 %                         Minimum Matlab version required: 2020a
 %                         Toolboxes required: Image Processing
 %                                           Have fun playing the game!
 
 %--------------------Setting up board and objects---------------%
-clear all
 FallingBlocksFigure = figure('color',[0 0.4470 0.7410],...            %Block
     'KeyPressFcn', @keyboardFunction,'unit','normal','position',[.1 .1 .7 .7]);
-% 
+
 %  FallingBlocksAxes = axes('color', 'black',...                  %Axes
 %     'XLim', [0 1280], 'YLim', [0 1280], 'XTickLabels',[],'YTickLabels',[],'position',[.05 .05 .9 .9]);
 
@@ -30,25 +29,27 @@ set(gca,'visible','off')
 
 
 
-%-------defining initial velocities and positions
+%-------defining initial velocities and positions of falling blocks 
 FallingBlockVelcloud = [0, -12.8];                                %cloud
 FallingBlockVelsun = [0, -12.8];                                  %sun                                
 
 FallingBlockPossun = [200 1150];
 FallingBlockPoscloud = [640 1024]; 
 
-%defining shapes of player and falling blocks, including implementing image of plastic
-%bag
+%defining shapes of player and falling blocks, including implementing image
+%of sun and of clouds
 
-[sun, mapsun, alpha] = imread('sunray.png','BackgroundColor', 'none');
-alpha = zeros(length(alpha(1)),length(alpha(2)));
-sunresize = imresize(sun, 0.3);
-Fallingsun = image('XData',FallingBlockPossun(1),'YData',FallingBlockPossun(2),'CData', flipud(sunresize)); 
+[sun, mapsun, alpha] = imread('sunray.png','BackgroundColor','none');
+alpha = zeros(length(alpha(1)),length(alpha(2))); 
+sunresize = imresize(sun, 0.1);
+Fallingsun = image('XData',FallingBlockPossun(1),'YData',FallingBlockPossun(2),'CData', ...
+    flipud(sunresize)); 
 
-[cloud, mapcloud, alpha2] = imread('sadcloud.png','BackgroundColor', 'none');
-cloudresize = imresize(cloud, 0.3);
+[cloud, mapcloud, alpha2] = imread('sadcloud2.png','BackgroundColor','none');
 alpha2 = zeros(length(alpha2(1)),length(alpha2(2)));
-Fallingcloud = image('XData',FallingBlockPoscloud(1),'YData',FallingBlockPoscloud(2),'CData', flipud(cloudresize));
+cloudresize = imresize(cloud, 0.4);
+Fallingcloud = image('XData',FallingBlockPoscloud(1),'YData',FallingBlockPoscloud(2),'CData', ...
+    flipud(cloudresize));
 
 %  GoodBlock = line(GoodBlockPos(1),GoodBlockPos(2),...  
 %     'marker','.','markersize', 25,'color','green');
@@ -58,7 +59,6 @@ PlayerCenter = 576;
 PlayerWidth = 64;
 Player = line([PlayerCenter - PlayerWidth, PlayerCenter + PlayerWidth],[PlayerWidth PlayerWidth],...     
     'color', '[0.5 0.5 0.5]', 'linewidth', 4);
-
 %% 
 %------------------------Loop-----------------------------------------%
 
@@ -89,16 +89,19 @@ while 1                 %game keeps running indefinitely
     %Calls a different function for the good block, as hitting the player
     %has different consequences than hitting a bad block
 
-   if livescounter == 0                            %what happens when the game is over
+   if livescounter == 0       %what happens when the game is over
 %     bar(pointscounter)
 %     text(1:length(pointscounter),pointscounter,num2str(pointscounter'),'vert','bottom','horiz','center'); 
 %     set(gca,'XTick',[], 'YTick', [])
 %     title('Your Score','FontSize',10)
 %     %Xlabel('Your Score')
 
-    gameover = text(256,640,'GAME OVER','FontSize',...    %GAME OVER text appears
-    100,'Color','r','FontName','Impact');
-    T_points = text(256,512,Y,'Fontsize',40,...           %redefined because setting x and y values doesn't work
+    %GAME OVER text appears
+    gameover = text(230,640,'Too cloudy, you are bankrupped!','FontSize',...   
+    50,'Color','r','FontName','Impact');
+
+    %The counters are redefined because setting x and y values doesn't work
+    T_points = text(256,512,Y,'Fontsize',40,...           
     'Color','w','FontName','Impact');
     set(T_points, 'str', ['Your final score is ', num2str(pointscounter)])
     set(T_lives, 'str', [Display_lives,' = ',num2str(livescounter)])
@@ -128,7 +131,7 @@ end
 %  solarpic = image('XData',FallingBlockPossq(1,:),'YData',FallingBlockPossq(2,:),'CData', flipud(solar));
 
  
- %Function
+%  %Function
 function keyboardFunction(~,event)
 global PlayerCenter
 switch event.Key
