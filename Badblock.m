@@ -1,6 +1,5 @@
-function [location, speed, livescounter ] = Badblock(background, image, location,speed,livescounter,PlayerCenter,PlayerWidth)   
-    dimensions = size(background);      %defining screen width to later determine new position for block
-    imagedim = size(image);             %defining block width in order to later find center of image
+function [location, speed, livescounter ] = Badblock(background, location,speed,livescounter,PlayerCenter,PlayerWidth)   
+    dimensions = size(background);      %defining screen width to later determine new position for block    
     if location(2) < 50                   %if y value of position is below a certain value
         if abs((location(1)+51.2) - PlayerCenter) > PlayerWidth   %and the block is not touching the player 
             %(with compensation for the fact that image x&y data corresponds to bottom left corner)

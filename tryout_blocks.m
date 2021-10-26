@@ -27,6 +27,10 @@ set(gca,'visible','off')
 %set(gca, 'YDir','reverse')
 %set(FallingBlocksAxes, 'YDir','reverse')
 
+missionstatement = text(100,1300,'Collect as much sun as possible!','Fontsize',40,...           
+'Color','w','FontName','Impact');
+% set(missionstatement, 'str', ['Collect as much sun as possible!'])
+
 
 
 %-------defining initial velocities and positions of falling blocks 
@@ -45,7 +49,7 @@ sunresize = imresize(sun, 0.1);
 Fallingsun = image('XData',FallingBlockPossun(1),'YData',FallingBlockPossun(2),'CData', ...
     flipud(sunresize)); 
 
-[cloud, mapcloud, alpha2] = imread('sadcloud2.png','BackgroundColor','none');
+[cloud, mapcloud, alpha2] = imread('sadcloud.png','BackgroundColor','none');
 alpha2 = zeros(length(alpha2(1)),length(alpha2(2)));
 cloudresize = imresize(cloud, 0.4);
 Fallingcloud = image('XData',FallingBlockPoscloud(1),'YData',FallingBlockPoscloud(2),'CData', ...
@@ -81,10 +85,10 @@ toc;
 while 1                 %game keeps running indefinitely
     %Calls function that contains the if statement that dictates what
     %happens when a block is at y = 0 or hits the player
-   [FallingBlockPoscloud, FallingBlockVelcloud, livescounter] = Badblock(x, cloud, ...
+   [FallingBlockPoscloud, FallingBlockVelcloud, livescounter] = Badblock(x, ...
    FallingBlockPoscloud,FallingBlockVelcloud,livescounter,PlayerCenter,PlayerWidth);
 
-   [FallingBlockPossun, FallingBlockVelsun, pointscounter] = Goodblockfunc(x, sun, ...
+   [FallingBlockPossun, FallingBlockVelsun, pointscounter] = Goodblockfunc(x, ...
    FallingBlockPossun,FallingBlockVelsun,pointscounter,PlayerCenter,PlayerWidth);
     %Calls a different function for the good block, as hitting the player
     %has different consequences than hitting a bad block
@@ -97,8 +101,9 @@ while 1                 %game keeps running indefinitely
 %     %Xlabel('Your Score')
 
     %GAME OVER text appears
-    gameover = text(230,640,'Too cloudy, you are bankrupped!','FontSize',...   
+    gameover = text(230,640,'Too cloudy, you are bankrupt!','FontSize',...    
     50,'Color','r','FontName','Impact');
+    set(missionstatement,'str','' )
 
     %The counters are redefined because setting x and y values doesn't work
     T_points = text(256,512,Y,'Fontsize',40,...           
